@@ -1,0 +1,57 @@
+body{
+    background: no-repeat center/cover url(../img/background-teste.jpg);
+    height: 74vh;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 195px auto auto auto;
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(195,79,255,1) 0%, rgba(20,255,0,1) 100%);
+    border: 5px solid rgb(19, 18, 18);
+    border-radius: 15px;
+    padding: 8px;
+}
+
+h1{
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+.pergunta{
+    display: flex;
+    flex-direction: row;
+    margin-left: 144px;
+}
+
+label{
+    font-family: 'Orbitron', sans-serif;
+}
+
+input{
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+input:hover{
+    cursor:pointer;
+}
+
+button{
+    width: 100px;
+    margin: 10px auto auto auto;
+    background-color: hotpink;
+    padding: 15px;
+    border-radius: 32px;
+    cursor: pointer;
+}
+
+button:hover {
+    color: red;
+}
