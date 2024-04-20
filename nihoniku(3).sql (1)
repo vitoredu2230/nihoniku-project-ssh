@@ -1,0 +1,292 @@
+-- phpMyAdmin SQL Dump
+-- version 4.8.5
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost
+-- Tempo de geração: 21/11/2023 às 13:56
+-- Versão do servidor: 10.1.38-MariaDB
+-- Versão do PHP: 5.6.40
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Banco de dados: `nihoniku`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `admin`
+--
+
+CREATE TABLE `admin` (
+  `id_admin` int(11) NOT NULL,
+  `nome_admin` varchar(100) DEFAULT NULL,
+  `login` varchar(50) DEFAULT NULL,
+  `senha` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Despejando dados para a tabela `admin`
+--
+
+INSERT INTO `admin` (`id_admin`, `nome_admin`, `login`, `senha`) VALUES
+(1, 'Vitor Eduardo Witchemichen', 'Cubo', '1234');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `aluno`
+--
+
+CREATE TABLE `aluno` (
+  `id_aluno` int(11) NOT NULL,
+  `nome_aluno` varchar(100) NOT NULL,
+  `email_aluno` varchar(100) NOT NULL,
+  `tel_aluno` varchar(11) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `senha` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Despejando dados para a tabela `aluno`
+--
+
+INSERT INTO `aluno` (`id_aluno`, `nome_aluno`, `email_aluno`, `tel_aluno`, `login`, `senha`) VALUES
+(1, 'aaaaaaaaaaaaaaaa', 'aaaaaa@gmail.com', '12345678910', 'aaaaaaa', '1234');
+
+--
+-- Gatilhos `aluno`
+--
+DELIMITER $$
+CREATE TRIGGER `trg_email_insert` AFTER INSERT ON `aluno` FOR EACH ROW BEGIN
+INSERT INTO email(email, aluno_idaluno) VALUES(NEW.email_aluno, NEW.id_aluno);
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `aula`
+--
+
+CREATE TABLE `aula` (
+  `id_aula` int(11) NOT NULL,
+  `aluno_idaluno` int(11) DEFAULT NULL,
+  `professor_idprofessor` int(11) DEFAULT NULL,
+  `video_idvideo` int(11) DEFAULT NULL,
+  `data_aula` date DEFAULT NULL,
+  `hora_aula` time DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `email`
+--
+
+CREATE TABLE `email` (
+  `id_email` int(11) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `aluno_idaluno` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Despejando dados para a tabela `email`
+--
+
+INSERT INTO `email` (`id_email`, `email`, `aluno_idaluno`) VALUES
+(1, 'aaaaaa@gmail.com', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `professor`
+--
+
+CREATE TABLE `professor` (
+  `id_professor` int(11) NOT NULL,
+  `nome_professor` varchar(100) NOT NULL,
+  `email_professor` varchar(100) NOT NULL,
+  `tel_professor` varchar(11) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `senha` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Despejando dados para a tabela `professor`
+--
+
+INSERT INTO `professor` (`id_professor`, `nome_professor`, `email_professor`, `tel_professor`, `login`, `senha`) VALUES
+(3, 'Fulano de tal', 'fulano@gmail.com', '12345', 'Fulano', '1234');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `termino`
+--
+
+CREATE TABLE `termino` (
+  `id_termino` int(11) NOT NULL,
+  `data_termino` datetime DEFAULT NULL,
+  `aluno_idaluno` int(11) DEFAULT NULL,
+  `video_idvideo` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `video`
+--
+
+CREATE TABLE `video` (
+  `id_video` int(11) NOT NULL,
+  `video` blob,
+  `nota_video` int(11) DEFAULT NULL,
+  `Aluno_idaluno` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Índices de tabelas apagadas
+--
+
+--
+-- Índices de tabela `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id_admin`);
+
+--
+-- Índices de tabela `aluno`
+--
+ALTER TABLE `aluno`
+  ADD PRIMARY KEY (`id_aluno`);
+
+--
+-- Índices de tabela `aula`
+--
+ALTER TABLE `aula`
+  ADD PRIMARY KEY (`id_aula`),
+  ADD KEY `aluno_idaluno` (`aluno_idaluno`),
+  ADD KEY `professor_idprofessor` (`professor_idprofessor`),
+  ADD KEY `video_idvideo` (`video_idvideo`);
+
+--
+-- Índices de tabela `email`
+--
+ALTER TABLE `email`
+  ADD PRIMARY KEY (`id_email`),
+  ADD KEY `aluno_idaluno` (`aluno_idaluno`);
+
+--
+-- Índices de tabela `professor`
+--
+ALTER TABLE `professor`
+  ADD PRIMARY KEY (`id_professor`);
+
+--
+-- Índices de tabela `termino`
+--
+ALTER TABLE `termino`
+  ADD PRIMARY KEY (`id_termino`),
+  ADD KEY `aluno_idaluno` (`aluno_idaluno`),
+  ADD KEY `video_idvideo` (`video_idvideo`);
+
+--
+-- Índices de tabela `video`
+--
+ALTER TABLE `video`
+  ADD PRIMARY KEY (`id_video`),
+  ADD KEY `Aluno_idaluno` (`Aluno_idaluno`);
+
+--
+-- AUTO_INCREMENT de tabelas apagadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `aluno`
+--
+ALTER TABLE `aluno`
+  MODIFY `id_aluno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `aula`
+--
+ALTER TABLE `aula`
+  MODIFY `id_aula` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `email`
+--
+ALTER TABLE `email`
+  MODIFY `id_email` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `professor`
+--
+ALTER TABLE `professor`
+  MODIFY `id_professor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de tabela `termino`
+--
+ALTER TABLE `termino`
+  MODIFY `id_termino` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `video`
+--
+ALTER TABLE `video`
+  MODIFY `id_video` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restrições para dumps de tabelas
+--
+
+--
+-- Restrições para tabelas `aula`
+--
+ALTER TABLE `aula`
+  ADD CONSTRAINT `aula_ibfk_1` FOREIGN KEY (`aluno_idaluno`) REFERENCES `aluno` (`id_aluno`),
+  ADD CONSTRAINT `aula_ibfk_2` FOREIGN KEY (`professor_idprofessor`) REFERENCES `professor` (`id_professor`),
+  ADD CONSTRAINT `aula_ibfk_3` FOREIGN KEY (`video_idvideo`) REFERENCES `video` (`id_video`);
+
+--
+-- Restrições para tabelas `email`
+--
+ALTER TABLE `email`
+  ADD CONSTRAINT `email_ibfk_1` FOREIGN KEY (`aluno_idaluno`) REFERENCES `aluno` (`id_aluno`);
+
+--
+-- Restrições para tabelas `termino`
+--
+ALTER TABLE `termino`
+  ADD CONSTRAINT `termino_ibfk_1` FOREIGN KEY (`aluno_idaluno`) REFERENCES `aluno` (`id_aluno`),
+  ADD CONSTRAINT `termino_ibfk_2` FOREIGN KEY (`video_idvideo`) REFERENCES `video` (`id_video`);
+
+--
+-- Restrições para tabelas `video`
+--
+ALTER TABLE `video`
+  ADD CONSTRAINT `video_ibfk_1` FOREIGN KEY (`Aluno_idaluno`) REFERENCES `aluno` (`id_aluno`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
